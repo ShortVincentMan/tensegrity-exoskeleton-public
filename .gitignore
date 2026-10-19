@@ -1,0 +1,64 @@
+# Ignore everything by default
+*
+
+# Public root files
+!/.gitignore
+!/README.md
+!/LICENSE
+!/LICENSE.md
+!/LICENSE.txt
+
+# Firmware
+!/firmware/
+!/firmware/**
+
+# Analysis code and documentation
+!/analysis/
+!/analysis/**/
+!/analysis/**/*.py
+!/analysis/**/*.m
+!/analysis/**/*.md
+!/analysis/requirements.txt
+
+# Selected documentation
+!/docs/
+!/docs/research-question.md
+!/docs/methods.md
+
+# Selected results
+!/results/
+!/results/limitations.md
+!/results/figures/
+!/results/figures/assets/
+!/results/figures/assets/feedback-control-architecture.svg
+
+# Always exclude local files and generated products
+**/.git/
+**/.DS_Store
+**/.vscode/
+**/.idea/
+**/.pio/
+**/.pioenvs/
+**/.piolibdeps/
+**/build/
+**/build-*/
+**/__pycache__/
+**/.venv/
+**/venv/
+**/.env
+**/.env.*
+**/secrets.*
+**/credentials.*
+**/*.pem
+**/*.key
+**/*.log
+**/*.bin
+**/*.elf
+**/*.hex
+**/*.map
+**/*.o
+**/*.a
+**/*.tmp
+**/*.bak
+**/*.swp
+**/*~

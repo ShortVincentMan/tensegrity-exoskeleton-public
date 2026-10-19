@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <title>Closed-loop assist-as-needed control architecture</title>
+  <desc>Upper-arm and forearm IMUs feed an ESP32 that estimates relative elbow angle and angular velocity, selects FOLLOW, ASSIST, RELEASE, or STOP, commands motor drivers and cable spools, and receives feedback from arm motion.</desc>
+
+  <defs>
+    <marker id="arrow-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#154734"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#5F6B66"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000000" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .title { font: 700 42px Arial, Helvetica, sans-serif; fill: #154734; }
+      .subtitle { font: 400 21px Arial, Helvetica, sans-serif; fill: #5F6B66; }
+      .section { font: 700 24px Arial, Helvetica, sans-serif; fill: #154734; }
+      .node-title { font: 700 22px Arial, Helvetica, sans-serif; fill: #17221E; }
+      .body { font: 400 18px Arial, Helvetica, sans-serif; fill: #3E4945; }
+      .small { font: 400 16px Arial, Helvetica, sans-serif; fill: #4E5A55; }
+      .state-name { font: 700 17px Arial, Helvetica, sans-serif; }
+      .state-desc { font: 400 14px Arial, Helvetica, sans-serif; fill: #35403C; }
+      .arrow-label { font: 700 15px Arial, Helvetica, sans-serif; fill: #154734; letter-spacing: 0.5px; }
+      .outer { fill: #FFFFFF; stroke: #B8C4BF; stroke-width: 2.5; }
+      .soft { fill: #F2F6F4; stroke: #C8D2CE; stroke-width: 2; }
+      .sensor { fill: #E8F2ED; stroke: #4E7E69; stroke-width: 2; }
+      .connector { fill: none; stroke: #154734; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow-green); }
+      .feedback { fill: none; stroke: #5F6B66; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 12 9; marker-end: url(#arrow-gray); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="#FFFFFF"/>
+
+  <text x="800" y="62" text-anchor="middle" class="title">Closed-Loop Assist-as-Needed Control Architecture</text>
+  <text x="800" y="96" text-anchor="middle" class="subtitle">Dual-IMU motion sensing drives state-based cable actuation</text>
+
+  <!-- Sensors -->
+  <g>
+    <rect x="55" y="160" width="330" height="255" rx="18" class="outer"/>
+    <rect x="55" y="160" width="330" height="56" rx="18" fill="#154734"/>
+    <rect x="55" y="198" width="330" height="18" fill="#154734"/>
+    <text x="220" y="196" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#FFFFFF">Limb Sensing</text>
+
+    <rect x="82" y="244" width="276" height="61" rx="12" class="sensor"/>
+    <circle cx="112" cy="274" r="13" fill="#154734"/>
+    <path d="M106 274h12M112 268v12" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="140" y="270" class="node-title">Upper-arm IMU</text>
+    <text x="140" y="291" class="small">BNO085 orientation</text>
+
+    <rect x="82" y="327" width="276" height="61" rx="12" class="sensor"/>
+    <circle cx="112" cy="357" r="13" fill="#154734"/>
+    <path d="M106 357h12M112 351v12" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="140" y="353" class="node-title">Forearm IMU</text>
+    <text x="140" y="374" class="small">BNO085 orientation</text>
+  </g>
+
+  <!-- Sensor arrow -->
+  <path d="M385 288 H455" class="connector"/>
+  <text x="420" y="270" text-anchor="middle" class="arrow-label">UART</text>
+
+  <!-- ESP32 controller -->
+  <g>
+    <rect x="470" y="130" width="615" height="380" rx="20" class="outer"/>
+    <rect x="470" y="130" width="615" height="62" rx="20" fill="#154734"/>
+    <rect x="470" y="172" width="615" height="20" fill="#154734"/>
+    <text x="777.5" y="169" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#FFFFFF">ESP32 Controller</text>
+
+    <rect x="500" y="222" width="250" height="102" rx="14" class="soft"/>
+    <text x="625" y="258" text-anchor="middle" class="node-title">Motion Estimation</text>
+    <text x="625" y="287" text-anchor="middle" class="body">Relative elbow angle</text>
+    <text x="625" y="311" text-anchor="middle" class="body">Angular velocity</text>
+
+    <path d="M750 273 H797" class="connector"/>
+
+    <rect x="812" y="222" width="243" height="102" rx="14" class="soft"/>
+    <text x="933.5" y="258" text-anchor="middle" class="node-title">Motion-State Logic</text>
+    <text x="933.5" y="287" text-anchor="middle" class="body">Selects safe cable</text>
+    <text x="933.5" y="311" text-anchor="middle" class="body">actuation behavior</text>
+
+    <!-- State cards -->
+    <rect x="500" y="355" width="128" height="116" rx="12" fill="#E5F3EB" stroke="#2E7D4F" stroke-width="2"/>
+    <text x="564" y="384" text-anchor="middle" class="state-name" fill="#24643F">FOLLOW</text>
+    <text x="564" y="411" text-anchor="middle" class="state-desc">
+      <tspan x="564" dy="0">Maintain cable</tspan>
+      <tspan x="564" dy="19">tension during</tspan>
+      <tspan x="564" dy="19">normal flexion</tspan>
+    </text>
+
+    <rect x="643" y="355" width="128" height="116" rx="12" fill="#FFF2D9" stroke="#C48113" stroke-width="2"/>
+    <text x="707" y="384" text-anchor="middle" class="state-name" fill="#9B6300">ASSIST</text>
+    <text x="707" y="411" text-anchor="middle" class="state-desc">
+      <tspan x="707" dy="0">Pull when flexion</tspan>
+      <tspan x="707" dy="19">slows or</tspan>
+      <tspan x="707" dy="19">stalls</tspan>
+    </text>
+
+    <rect x="786" y="355" width="128" height="116" rx="12" fill="#E8F1F8" stroke="#3979A5" stroke-width="2"/>
+    <text x="850" y="384" text-anchor="middle" class="state-name" fill="#2E668B">RELEASE</text>
+    <text x="850" y="411" text-anchor="middle" class="state-desc">
+      <tspan x="850" dy="0">Unwind cable</tspan>
+      <tspan x="850" dy="19">during arm</tspan>
+      <tspan x="850" dy="19">extension</tspan>
+    </text>
+
+    <rect x="929" y="355" width="126" height="116" rx="12" fill="#F9E7E7" stroke="#A94343" stroke-width="2"/>
+    <text x="992" y="384" text-anchor="middle" class="state-name" fill="#8D3333">STOP</text>
+    <text x="992" y="411" text-anchor="middle" class="state-desc">
+      <tspan x="992" dy="0">Disable at limits</tspan>
+      <tspan x="992" dy="19">or sensor</tspan>
+      <tspan x="992" dy="19">failure</tspan>
+    </text>
+  </g>
+
+  <!-- Controller to drivers -->
+  <path d="M1085 288 H1145" class="connector"/>
+  <text x="1115" y="270" text-anchor="middle" class="arrow-label">STEP / DIR</text>
+
+  <!-- Motor drivers -->
+  <g>
+    <rect x="1160" y="160" width="360" height="255" rx="18" class="outer"/>
+    <rect x="1160" y="160" width="360" height="56" rx="18" fill="#154734"/>
+    <rect x="1160" y="198" width="360" height="18" fill="#154734"/>
+    <text x="1340" y="196" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#FFFFFF">Motor Output</text>
+
+    <rect x="1192" y="244" width="296" height="60" rx="12" class="soft"/>
+    <text x="1340" y="271" text-anchor="middle" class="node-title">Dual A4988 Drivers</text>
+    <text x="1340" y="292" text-anchor="middle" class="small">Shared enable • Separate STEP/DIR</text>
+
+    <rect x="1192" y="326" width="296" height="60" rx="12" class="soft"/>
+    <text x="1340" y="353" text-anchor="middle" class="node-title">Two Stepper Motors</text>
+    <text x="1340" y="374" text-anchor="middle" class="small">Synchronized cable actuation</text>
+  </g>
+
+  <!-- Output down to transmission -->
+  <path d="M1340 415 V490" class="connector"/>
+
+  <!-- Spools and cables -->
+  <g>
+    <rect x="1160" y="510" width="360" height="150" rx="18" class="outer"/>
+    <circle cx="1217" cy="585" r="32" fill="#E8F2ED" stroke="#154734" stroke-width="5"/>
+    <circle cx="1217" cy="585" r="11" fill="#154734"/>
+    <path d="M1249 585 C1275 585 1277 552 1300 552 C1324 552 1324 618 1350 618" fill="none" stroke="#BD8B13" stroke-width="6" stroke-linecap="round"/>
+    <text x="1407" y="573" text-anchor="middle" class="node-title">Spools and Cables</text>
+    <text x="1407" y="600" text-anchor="middle" class="body">Convert motor rotation</text>
+    <text x="1407" y="625" text-anchor="middle" class="body">into cable travel</text>
+  </g>
+
+  <!-- Transmission to arm -->
+  <path d="M1160 585 H1040" class="connector"/>
+  <text x="1100" y="567" text-anchor="middle" class="arrow-label">CABLE FORCE</text>
+
+  <!-- Arm motion -->
+  <g>
+    <rect x="665" y="510" width="360" height="150" rx="18" class="outer"/>
+    <circle cx="729" cy="565" r="21" fill="#E8F2ED" stroke="#154734" stroke-width="4"/>
+    <line x1="729" y1="586" x2="729" y2="624" stroke="#154734" stroke-width="7" stroke-linecap="round"/>
+    <line x1="729" y1="596" x2="760" y2="615" stroke="#154734" stroke-width="7" stroke-linecap="round"/>
+    <line x1="760" y1="615" x2="786" y2="585" stroke="#BD8B13" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="760" cy="615" r="7" fill="#154734"/>
+    <text x="892" y="568" text-anchor="middle" class="node-title">Arm Motion</text>
+    <text x="892" y="597" text-anchor="middle" class="body">Elbow flexion and extension</text>
+    <text x="892" y="623" text-anchor="middle" class="body">change IMU orientation</text>
+  </g>
+
+  <!-- Closed-loop feedback -->
+  <path d="M665 585 H220 V438" class="feedback"/>
+  <text x="430" y="614" text-anchor="middle" class="arrow-label">MEASURED LIMB MOTION FEEDBACK</text>
+
+  <!-- Footer note -->
+  <rect x="350" y="738" width="900" height="82" rx="14" fill="#F2F6F4"/>
+  <text x="800" y="771" text-anchor="middle" class="section">Safety behavior</text>
+  <text x="800" y="800" text-anchor="middle" class="body">Sensor timeout, invalid angle, travel limit, or STOP input disables motor actuation.</text>
+</svg>

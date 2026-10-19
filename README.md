@@ -1,3 +1,4 @@
+![Poster of Feedback Control of an Upper Limb Tensegrity Exoskeleton](results/poster/source-and-previews/finalposter.jpg) 
 # Feedback Control of an Upper Limb Tensegrity Exoskeleton
 
 Research by **Vincent Le**, advised by **Dr. Alan Zhang**, Department of Mechanical Engineering, California Polytechnic State University, San Luis Obispo. Developed during the **2026 Summer Undergraduate Research Program**, with earlier ME 400 project work preserved as background.

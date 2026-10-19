@@ -1,5 +1,3 @@
-# Ignore everything by default
-*
 
 # Public root files
 !/.gitignore
